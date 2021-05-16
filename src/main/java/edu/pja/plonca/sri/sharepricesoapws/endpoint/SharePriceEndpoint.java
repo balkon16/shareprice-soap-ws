@@ -15,7 +15,9 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Endpoint
 @RequiredArgsConstructor
@@ -92,6 +94,18 @@ public class SharePriceEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getSharePricesByStockExchangeRequest")
+    @ResponsePayload
+    public GetSharePricesByStockExchangeResponse getSharePricesByStockExchange(@RequestPayload GetSharePricesByStockExchangeRequest req){
+        List<SharePrice> spList = sharePriceRepository.findAllByStockExchange(req.getStockExchange());
+        List<SharePriceDto> dtoList = spList.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        GetSharePricesByStockExchangeResponse res = new GetSharePricesByStockExchangeResponse();
+        res.getSharePrices().addAll(dtoList);
+        return res;
+    }
+
     private SharePriceDto convertToDto(SharePrice sp) {
         if (sp == null){
             return null;
@@ -125,8 +139,4 @@ public class SharePriceEndpoint {
                 .index(dto.getIndex())
                 .build();
     }
-
-//    private SharePrice findSharePriceByTickerOrderByMeasurementDateDesc(String ticker){
-//
-//    }
 }

@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface SharePriceRepository extends CrudRepository<SharePrice, Long> {
     List<SharePrice> findAll();
     Optional<SharePrice> findFirstByTickerOrderByMeasurementDateDesc(String ticker);
+    List<SharePrice> findAllByStockExchange(String stockExchange);
 }
