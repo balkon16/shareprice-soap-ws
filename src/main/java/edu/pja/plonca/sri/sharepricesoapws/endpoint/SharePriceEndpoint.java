@@ -44,6 +44,18 @@ public class SharePriceEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "addBulkRequest")
+    @ResponsePayload
+    public AddBulkResponse addBulk(@RequestPayload AddBulkRequest req){
+        for (SharePriceDto spDto : req.getSharePrice()) {
+            SharePrice sp = convertToEntity(spDto);
+            sharePriceRepository.save(sp);
+        }
+        AddBulkResponse response = new AddBulkResponse();
+        response.setIsSuccessful(true);
+        return response;
+    }
+
     private SharePriceDto convertToDto(SharePrice sp) {
         if (sp == null){
             return null;

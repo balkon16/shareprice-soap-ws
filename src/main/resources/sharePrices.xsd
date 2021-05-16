@@ -34,7 +34,7 @@
     <xs:element name="addSharePriceRequest">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="sharePrice" type="tns:sharePriceDto" minOccurs="1"/>
+                <xs:element name="sharePrice" type="tns:sharePriceDto" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -46,5 +46,22 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <xs:element name="addBulkRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sharePrice" type="tns:sharePriceDto" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addBulkResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="isSuccessful" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 
 </xs:schema>
