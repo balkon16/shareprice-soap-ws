@@ -1,0 +1,15 @@
+TODO: Metoda do wstawienia pojedynczeog kursu
+TODO: Metoda do wstawienia kilku kursów (lista)
+TODO: Metoda do pobrania kursu najnowszego dla tickera
+TODO: Metoda do pobrania wszystkich kursów dla tickera wg daty
+TODO: Metoda do pobrania wszystkich kursów wg daty
+TODO: Metoda do aktualizacji kursu wg ID
+
+TODO: dokumentacja żądąń i odpowiedzi SOAP:
+ 1. Metoda do wyszukania kursu po ID
+ 2. Metoda do aktualizacji kursu wg ID
+ 3. Metoda do pobrania wszystkich kursów wg daty (zakresu dat)
+ 4. Metoda do pobrania wszystkich kursów dla tickera wg daty (zakresu dat)
+ 5. Metoda do pobrania kursu najnowszego dla tickera
+ 6. Metoda do wstawienia kilku kursów (lista)
+ 7. Metoda do wstawienia pojedynczeog kursu
