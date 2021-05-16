@@ -21,6 +21,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
 
     private final SharePriceRepository sharePriceRepository;
 
+    // TODO: dodać więcej przypadków
     public void initData() {
         SharePrice sp1 = SharePrice.builder()
                 .ticker("CCC")
@@ -41,12 +42,20 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         SharePrice sp3 = SharePrice.builder()
                 .ticker("CCC")
                 .currency("PLN")
-                .price(90.14)
+                .price(190.14)
                 .measurementDate(LocalDateTime.of(2020, 5, 1, 12, 31, 5))
                 .stockExchange("GPW")
                 .index("WIG20")
                 .build();
-        sharePriceRepository.saveAll(Arrays.asList(sp1, sp2, sp3));
+        SharePrice sp4 = SharePrice.builder()
+                .ticker("CCC")
+                .currency("PLN")
+                .price(70.14)
+                .measurementDate(LocalDateTime.of(2019, 5, 1, 12, 31, 5))
+                .stockExchange("GPW")
+                .index("WIG20")
+                .build();
+        sharePriceRepository.saveAll(Arrays.asList(sp1, sp2, sp3, sp4));
     }
 
     @Override

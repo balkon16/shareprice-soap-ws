@@ -5,6 +5,7 @@ import edu.pja.plonca.sri.sharepricesoapws.model.SharePrice;
 import edu.pja.plonca.sri.sharepricesoapws.repo.SharePriceRepository;
 import edu.pja.plonca.sri.sharepricesoapws.shareprices.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -14,6 +15,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +29,7 @@ public class SharePriceEndpoint {
 
     @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getSharePriceByIdRequest")
     @ResponsePayload
-    public GetSharePriceByIdResponse getSharePriceById(@RequestPayload GetSharePriceByIdRequest req){
+    public GetSharePriceByIdResponse getSharePriceById(@RequestPayload GetSharePriceByIdRequest req) {
         Long sharePriceId = req.getSharePriceId().longValue();
         Optional<SharePrice> sp = sharePriceRepository.findById(sharePriceId);
         GetSharePriceByIdResponse res = new GetSharePriceByIdResponse();
@@ -48,7 +50,7 @@ public class SharePriceEndpoint {
 
     @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "addBulkRequest")
     @ResponsePayload
-    public AddBulkResponse addBulk(@RequestPayload AddBulkRequest req){
+    public AddBulkResponse addBulk(@RequestPayload AddBulkRequest req) {
         for (SharePriceDto spDto : req.getSharePrice()) {
             SharePrice sp = convertToEntity(spDto);
             sharePriceRepository.save(sp);
@@ -60,7 +62,7 @@ public class SharePriceEndpoint {
 
     @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getLatestByTickerRequest")
     @ResponsePayload
-    public GetLatestByTickerResponse getLatestByTicker(@RequestPayload GetLatestByTickerRequest req){
+    public GetLatestByTickerResponse getLatestByTicker(@RequestPayload GetLatestByTickerRequest req) {
         String ticker = req.getTicker();
         Optional<SharePrice> sp = sharePriceRepository.findFirstByTickerOrderByMeasurementDateDesc(ticker);
         GetLatestByTickerResponse res = new GetLatestByTickerResponse();
@@ -70,7 +72,7 @@ public class SharePriceEndpoint {
 
     @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "updateSharePriceRequest")
     @ResponsePayload
-    public UpdateSharePriceResponse updateSharePrice(@RequestPayload UpdateSharePriceRequest req){
+    public UpdateSharePriceResponse updateSharePrice(@RequestPayload UpdateSharePriceRequest req) {
         SharePriceDto spDto = req.getSharePrice();
         SharePrice spNew = convertToEntity(spDto);
 
@@ -78,7 +80,7 @@ public class SharePriceEndpoint {
         Optional<SharePrice> spOld = sharePriceRepository.findById(sharePriceId);
 
         UpdateSharePriceResponse response = new UpdateSharePriceResponse();
-        if (spOld.isPresent()){
+        if (spOld.isPresent()) {
             SharePrice spOldExtracted = spOld.get();
             spOldExtracted.setTicker(spNew.getTicker());
             spOldExtracted.setCurrency(spNew.getCurrency());
@@ -96,7 +98,7 @@ public class SharePriceEndpoint {
 
     @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getSharePricesByStockExchangeRequest")
     @ResponsePayload
-    public GetSharePricesByStockExchangeResponse getSharePricesByStockExchange(@RequestPayload GetSharePricesByStockExchangeRequest req){
+    public GetSharePricesByStockExchangeResponse getSharePricesByStockExchange(@RequestPayload GetSharePricesByStockExchangeRequest req) {
         List<SharePrice> spList = sharePriceRepository.findAllByStockExchange(req.getStockExchange());
         List<SharePriceDto> dtoList = spList.stream()
                 .map(this::convertToDto)
@@ -106,8 +108,42 @@ public class SharePriceEndpoint {
         return res;
     }
 
+    @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getSharePricesByTickerAndBetweenMeasurementDateRequest")
+    @ResponsePayload
+    public GetSharePricesByTickerAndBetweenMeasurementDateResponse getSharePricesByTickerAndBetweenMeasurementDate
+            (@RequestPayload GetSharePricesByTickerAndBetweenMeasurementDateRequest req) {
+
+        LocalDateTime startDateTime = LocalDateTime.parse(req.getStartDateTime().toString());
+        LocalDateTime endDateTime = LocalDateTime.parse(req.getEndDateTime().toString());
+        String ticker = req.getTicker();
+
+        List<SharePrice> spList = sharePriceRepository.
+                findAllByTickerAndMeasurementDateBetweenOrderByMeasurementDateDesc(ticker, startDateTime, endDateTime);
+        List<SharePriceDto> dtoList = spList.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        GetSharePricesByTickerAndBetweenMeasurementDateResponse res = new GetSharePricesByTickerAndBetweenMeasurementDateResponse();
+        res.getSharePrices().addAll(dtoList);
+        return res;
+    }
+
+    @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getMaxSharePriceByTickerAndBetweenMeasurementDateRequest")
+    @ResponsePayload
+    public GetMaxSharePriceByTickerAndBetweenMeasurementDateResponse getMaxSharePriceByTickerAndBetweenMeasurementDate
+            (@RequestPayload GetMaxSharePriceByTickerAndBetweenMeasurementDateRequest req) {
+        LocalDateTime startDateTime = LocalDateTime.parse(req.getStartDateTime().toString());
+        LocalDateTime endDateTime = LocalDateTime.parse(req.getEndDateTime().toString());
+        String ticker = req.getTicker();
+
+        Optional<SharePrice> sp = sharePriceRepository.
+                findFirstByTickerAndMeasurementDateBetweenOrderByPriceDesc(ticker, startDateTime, endDateTime);
+        GetMaxSharePriceByTickerAndBetweenMeasurementDateResponse res = new GetMaxSharePriceByTickerAndBetweenMeasurementDateResponse();
+        res.setSharePrice(convertToDto(sp.orElse(null)));
+        return res;
+    }
+
     private SharePriceDto convertToDto(SharePrice sp) {
-        if (sp == null){
+        if (sp == null) {
             return null;
         }
         try {

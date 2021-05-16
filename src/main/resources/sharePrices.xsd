@@ -111,4 +111,40 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="getSharePricesByTickerAndBetweenMeasurementDateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ticker" type="xs:string"/>
+                <xs:element name="startDateTime" type="xs:dateTime"/>
+                <xs:element name="endDateTime" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getSharePricesByTickerAndBetweenMeasurementDateResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sharePrices" type="tns:sharePriceDto" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getMaxSharePriceByTickerAndBetweenMeasurementDateRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ticker" type="xs:string"/>
+                <xs:element name="startDateTime" type="xs:dateTime"/>
+                <xs:element name="endDateTime" type="xs:dateTime"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getMaxSharePriceByTickerAndBetweenMeasurementDateResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sharePrice" type="tns:sharePriceDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 </xs:schema>
