@@ -31,4 +31,20 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="addSharePriceRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sharePrice" type="tns:sharePriceDto" minOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addSharePriceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sharePriceId" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 </xs:schema>

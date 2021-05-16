@@ -1,4 +1,4 @@
-TODO: Metoda do wstawienia pojedynczeog kursu
+
 TODO: Metoda do wstawienia kilku kursów (lista)
 TODO: Metoda do pobrania kursu najnowszego dla tickera
 TODO: Metoda do pobrania wszystkich kursów dla tickera wg daty

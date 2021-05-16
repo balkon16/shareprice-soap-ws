@@ -3,9 +3,7 @@ package edu.pja.plonca.sri.sharepricesoapws.endpoint;
 import edu.pja.plonca.sri.sharepricesoapws.config.SoapWSConfig;
 import edu.pja.plonca.sri.sharepricesoapws.model.SharePrice;
 import edu.pja.plonca.sri.sharepricesoapws.repo.SharePriceRepository;
-import edu.pja.plonca.sri.sharepricesoapws.shareprices.GetSharePriceByIdRequest;
-import edu.pja.plonca.sri.sharepricesoapws.shareprices.GetSharePriceByIdResponse;
-import edu.pja.plonca.sri.sharepricesoapws.shareprices.SharePriceDto;
+import edu.pja.plonca.sri.sharepricesoapws.shareprices.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -25,16 +23,6 @@ public class SharePriceEndpoint {
 
     private final SharePriceRepository sharePriceRepository;
 
-//    @PayloadRoot(namespace = SoapWSConfig.EMPLOYEE_NAMESPACE, localPart = "getEmployeeByIdRequest")
-//    @ResponsePayload
-//    public GetEmployeeByIdResponse getEmployeeById(@RequestPayload GetEmployeeByIdRequest req){
-//        Long employeeId = req.getEmployeeId().longValue();
-//        Optional<Employee> emp = employeeRepository.findById(employeeId);
-//        GetEmployeeByIdResponse res = new GetEmployeeByIdResponse();
-//        res.setEmployee(convertToDto(emp.orElse(null)));
-//        return res;
-//    }
-
     @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getSharePriceByIdRequest")
     @ResponsePayload
     public GetSharePriceByIdResponse getSharePriceById(@RequestPayload GetSharePriceByIdRequest req){
@@ -43,6 +31,17 @@ public class SharePriceEndpoint {
         GetSharePriceByIdResponse res = new GetSharePriceByIdResponse();
         res.setSharePrice(convertToDto(sp.orElse(null)));
         return res;
+    }
+
+    @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "addSharePriceRequest")
+    @ResponsePayload
+    public AddSharePriceResponse addSharePrice(@RequestPayload AddSharePriceRequest req) {
+        SharePriceDto spDto = req.getSharePrice();
+        SharePrice sp = convertToEntity(spDto);
+        sharePriceRepository.save(sp);
+        AddSharePriceResponse response = new AddSharePriceResponse();
+        response.setSharePriceId(new BigDecimal(sp.getId()));
+        return response;
     }
 
     private SharePriceDto convertToDto(SharePrice sp) {
