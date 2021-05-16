@@ -38,7 +38,15 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 .stockExchange("NYSE")
                 .index("NASDAQ")
                 .build();
-        sharePriceRepository.saveAll(Arrays.asList(sp1, sp2));
+        SharePrice sp3 = SharePrice.builder()
+                .ticker("CCC")
+                .currency("PLN")
+                .price(90.14)
+                .measurementDate(LocalDateTime.of(2020, 5, 1, 12, 31, 5))
+                .stockExchange("GPW")
+                .index("WIG20")
+                .build();
+        sharePriceRepository.saveAll(Arrays.asList(sp1, sp2, sp3));
     }
 
     @Override

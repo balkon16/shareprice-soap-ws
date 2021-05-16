@@ -56,6 +56,16 @@ public class SharePriceEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "getLatestByTickerRequest")
+    @ResponsePayload
+    public GetLatestByTickerResponse getLatestByTicker(@RequestPayload GetLatestByTickerRequest req){
+        String ticker = req.getTicker();
+        Optional<SharePrice> sp = sharePriceRepository.findFirstByTickerOrderByMeasurementDateDesc(ticker);
+        GetLatestByTickerResponse res = new GetLatestByTickerResponse();
+        res.setSharePrice(convertToDto(sp.orElse(null)));
+        return res;
+    }
+
     @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "updateSharePriceRequest")
     @ResponsePayload
     public UpdateSharePriceResponse updateSharePrice(@RequestPayload UpdateSharePriceRequest req){
@@ -115,4 +125,8 @@ public class SharePriceEndpoint {
                 .index(dto.getIndex())
                 .build();
     }
+
+//    private SharePrice findSharePriceByTickerOrderByMeasurementDateDesc(String ticker){
+//
+//    }
 }

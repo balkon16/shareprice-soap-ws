@@ -79,4 +79,20 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="getLatestByTickerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ticker" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLatestByTickerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sharePrice" type="tns:sharePriceDto" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 </xs:schema>

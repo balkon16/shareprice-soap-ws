@@ -1,6 +1,5 @@
 
 
-TODO: Metoda do pobrania kursu najnowszego dla tickera
 TODO: Metoda do pobrania wszystkich kursów dla tickera wg daty
 TODO: Metoda do pobrania wszystkich kursów wg daty
 
