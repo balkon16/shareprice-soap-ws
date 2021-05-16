@@ -3,7 +3,6 @@
 TODO: Metoda do pobrania kursu najnowszego dla tickera
 TODO: Metoda do pobrania wszystkich kursów dla tickera wg daty
 TODO: Metoda do pobrania wszystkich kursów wg daty
-TODO: Metoda do aktualizacji kursu wg ID
 
 TODO: dokumentacja żądąń i odpowiedzi SOAP:
  1. Metoda do wyszukania kursu po ID

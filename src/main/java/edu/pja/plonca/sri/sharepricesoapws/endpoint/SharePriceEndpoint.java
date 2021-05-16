@@ -56,6 +56,32 @@ public class SharePriceEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = SoapWSConfig.SHARE_PRICE_NAMESPACE, localPart = "updateSharePriceRequest")
+    @ResponsePayload
+    public UpdateSharePriceResponse updateSharePrice(@RequestPayload UpdateSharePriceRequest req){
+        SharePriceDto spDto = req.getSharePrice();
+        SharePrice spNew = convertToEntity(spDto);
+
+        Long sharePriceId = req.getSharePrice().getId().longValue();
+        Optional<SharePrice> spOld = sharePriceRepository.findById(sharePriceId);
+
+        UpdateSharePriceResponse response = new UpdateSharePriceResponse();
+        if (spOld.isPresent()){
+            SharePrice spOldExtracted = spOld.get();
+            spOldExtracted.setTicker(spNew.getTicker());
+            spOldExtracted.setCurrency(spNew.getCurrency());
+            spOldExtracted.setPrice(spNew.getPrice());
+            spOldExtracted.setMeasurementDate(spNew.getMeasurementDate());
+            spOldExtracted.setStockExchange(spNew.getStockExchange());
+            spOldExtracted.setIndex(spNew.getIndex());
+            sharePriceRepository.save(spOldExtracted);
+            response.setIsSuccessful(true);
+        } else {
+            response.setIsSuccessful(false);
+        }
+        return response;
+    }
+
     private SharePriceDto convertToDto(SharePrice sp) {
         if (sp == null){
             return null;
