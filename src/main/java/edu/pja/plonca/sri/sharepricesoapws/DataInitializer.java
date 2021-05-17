@@ -28,7 +28,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 .currency("PLN")
                 .price(121.04)
                 .measurementDate(LocalDateTime.of(2021, 5, 15, 12, 31, 5))
-                .stockExchange("GPW")
+                .stockExchange("WSE")
                 .index("WIG20")
                 .build();
         SharePrice sp2 = SharePrice.builder()
@@ -44,7 +44,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 .currency("PLN")
                 .price(190.14)
                 .measurementDate(LocalDateTime.of(2020, 5, 1, 12, 31, 5))
-                .stockExchange("GPW")
+                .stockExchange("WSE")
                 .index("WIG20")
                 .build();
         SharePrice sp4 = SharePrice.builder()
@@ -52,7 +52,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 .currency("PLN")
                 .price(70.14)
                 .measurementDate(LocalDateTime.of(2019, 5, 1, 12, 31, 5))
-                .stockExchange("GPW")
+                .stockExchange("WSE")
                 .index("WIG20")
                 .build();
         sharePriceRepository.saveAll(Arrays.asList(sp1, sp2, sp3, sp4));
