@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+   <SOAP-ENV:Header/>
+   <SOAP-ENV:Body>
+      <ns2:getSharePriceByIdResponse xmlns:ns2="http://sharepricesoapws.sri.plonca.pja.edu/sharePrices">
+         <ns2:sharePrice>
+            <ns2:id>2</ns2:id>
+            <ns2:ticker>AAPL</ns2:ticker>
+            <ns2:currency/>
+            <ns2:price>100.12</ns2:price>
+            <ns2:measurementDate>2020-01-13T12:00:30</ns2:measurementDate>
+            <ns2:stockExchange>WSE</ns2:stockExchange>
+            <ns2:index>sWIG80</ns2:index>
+         </ns2:sharePrice>
+      </ns2:getSharePriceByIdResponse>
+   </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
